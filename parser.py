@@ -175,8 +175,9 @@ polygons = []
 transform = new_matrix()
 
 #parse_file('script', edges, polygons, transform, screen, zbuffer, color)
-add_sphere(polygons, 250, 250, 250, 10, 10)
-#add_polygon(polygons, 250, 250, 0, 175, 15, 0, 300, 250, 0)
+add_sphere(polygons, 250, 250, 250, 50, 10)
+add_torus(polygons, 150, 250, 250, 10, 100, 10)
+add_box(polygons, 400, 400, 400, 50, 50, 10)
 draw_polygons(polygons, screen, zbuffer, [255, 0, 0])
 save_ppm(screen, "img.ppm")
 '''if len(argv) != 2:

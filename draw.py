@@ -19,7 +19,7 @@ def fill(screen, color, zbuffer, x0, y0, z0, x1, y1, z1, x2, y2, z2):
     # Degeneracy, Set Slope
     if ytop == ybot:
         return    
-    
+ 
     # YMid = YBot
     elif ymid == ybot:
         d1 = float(xtop  - xmid) / (ytop - ymid)
@@ -29,22 +29,24 @@ def fill(screen, color, zbuffer, x0, y0, z0, x1, y1, z1, x2, y2, z2):
         d1 = float(xmid - xbot) / (ymid - ybot)
 
     # Normal Case
-    else:
+    else:#perhaps include a case for xmid == xbot, xtop == xbot
         d1 = float(xmid - xbot) / (ymid - ybot)
-
+        #if xmid == xbot: print(d1)
     # ! BIG ERROR ! : When xtop == xbot, the lines slope may be really off and huge and draw off the sphere
-
     d0 = float(xtop - xbot) / (ytop - ybot)
 
-    for y in range(int(ybot), int(ytop)):
+    for y in range(int(ybot)+1, int(ytop)):
         draw_line(int(x0), y, 0, int(x1), y, 0, screen, zbuffer, color)
-        #if xtop == xbot: something i have not learned yet
-            
+
         # Once you hit YMid, Change the Slope to Top-Mid, 
-        if y == ymid and ymid != ybot:
+        if y >= ymid and ytop != ymid:
             d1 = float(xtop - xmid) / (ytop - ymid)
         x0 += d0
         x1 += d1
+        #if (x1 < 150): print([d0, d1])
+
+
+
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(polygons, x0, y0, z0);
