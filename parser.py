@@ -165,7 +165,7 @@ def parse_file( fname, edges, polygons, transform, screen, zbuffer, color ):
             else:
                 save_extension(screen, args[0])
         c+= 1
-
+'''
 #main
 screen = new_screen()
 zbuffer = new_zbuffer()
@@ -179,5 +179,5 @@ add_sphere(polygons, 250, 250, 250, 50, 10)
 add_torus(polygons, 150, 250, 250, 10, 100, 10)
 add_box(polygons, 400, 400, 400, 50, 50, 10)
 draw_polygons(polygons, screen, zbuffer, [255, 0, 0])
-save_ppm(screen, "img.ppm")
+save_ppm(screen, "img.ppm")'''
 
