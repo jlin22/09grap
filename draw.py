@@ -35,7 +35,7 @@ def fill(screen, color, zbuffer, x0, y0, z0, x1, y1, z1, x2, y2, z2):
     # ! BIG ERROR ! : When xtop == xbot, the lines slope may be really off and huge and draw off the sphere
     d0 = float(xtop - xbot) / (ytop - ybot)
 
-    for y in range(int(ybot)+1, int(ytop)):
+    for y in range(int(ybot), int(ytop)+1):
         draw_line(int(x0), y, 0, int(x1), y, 0, screen, zbuffer, color)
 
         # Once you hit YMid, Change the Slope to Top-Mid, 
