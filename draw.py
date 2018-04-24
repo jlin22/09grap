@@ -35,15 +35,14 @@ def fill(screen, color, zbuffer, x0, y0, z0, x1, y1, z1, x2, y2, z2):
     # ! BIG ERROR ! : When xtop == xbot, the lines slope may be really off and huge and draw off the sphere
     d0 = float(xtop - xbot) / (ytop - ybot)
 
-    for y in range(int(ybot), int(ytop)+1):
+    for y in range(int(ybot)+1, int(ytop)):
         draw_line(int(x0), y, 0, int(x1), y, 0, screen, zbuffer, color)
-
         # Once you hit YMid, Change the Slope to Top-Mid, 
         if y >= ymid and ytop != ymid:
             d1 = float(xtop - xmid) / (ytop - ymid)
         x0 += d0
         x1 += d1
-        #if (x1 < 150): print([d0, d1])
+        #if (x1 < 150): print([d0, d1]) 
 
 
 
@@ -86,8 +85,8 @@ def draw_polygons( matrix, screen, zbuffer, color ):
                        int(matrix[point+2][0]),
                        int(matrix[point+2][1]),
                        matrix[point+2][2],
-                       screen, zbuffer, color)
-            '''
+                       screen, zbuffer, color)'''
+            
             fill(screen, color, zbuffer, matrix[point][0], matrix[point][1], matrix[point][2],
              matrix[point+1][0], matrix[point+1][1], matrix[point+1][2],
              matrix[point+2][0], matrix[point+2][1], matrix[point+2][2])
