@@ -5,68 +5,44 @@ from gmath import *
 from random import *
 
 def scanline_convert(polygons, i, screen, zbuffer ):
-    '''if len(matrix) < 2:
-        print 'Need at least 3 points to draw'
-        return
+    pass
+    
 
-    point = 0
-    while point < len(matrix) - 2:
-        normal = calculate_normal(matrix, point)[:]
-
-        if normal[2] > 0:
-            fill(screen, int(matrix[point][0]),
-                       int(matrix[point][1]),
-                       matrix[point][2],
-                       int(matrix[point+1][0]),
-                       int(matrix[point+1][1]),
-                       matrix[point+1][2],
-                       int(matrix[point+2][0]),
-                       int(matrix[point+2][1]),
-                       matrix[point+2][2])
-        point+= 3
-    pass'''
-
-def fill(screen, color, x0, y0, z0, x1, y1, z1, x2, y2, z2):
+def fill(screen, color, zbuffer, x0, y0, z0, x1, y1, z1, x2, y2, z2):
     # Finding Bot, Mid, Top
     coord = [[y0, x0], [y1, x1], [y2, x2]]
     coord.sort()
-    #print(coord)
-    '''ypoints = [y0, y1, y2]
-    ypoints.sort()'''
     ybot, ymid, ytop = coord[0][0], coord[1][0], coord[2][0]
     xbot, xmid, xtop = coord[0][1], coord[1][1], coord[2][1]
-    #print([ybot, xbot], [ymid, xmid], [ytop, xtop])
-    #print([xbot, xmid, xtop])
-    #xbot, xmid, xtop =
-    #print([ybot, ymid, ytop])
-    #print([xbot, xmid, xtop])
-    # Start at Bottom
     x1, x0 = xbot, xbot
 
     # Degeneracy, Set Slope
     if ytop == ybot:
         return    
-    d0 = float(xtop - xbot) / (ytop - ybot)
-
+    
     # YMid = YBot
-    if ymid == ybot:
+    elif ymid == ybot:
         d1 = float(xtop  - xmid) / (ytop - ymid)
         x1 = xmid
+    # YMid = YTop
+    elif ymid == ytop:
+        d1 = float(xmid - xbot) / (ymid - ybot)
 
-    # Slope of Mid - Bot
+    # Normal Case
     else:
         d1 = float(xmid - xbot) / (ymid - ybot)
 
-    for y in range(int(ybot), int(ytop)):
-        draw_line(int(x0), y, 0, int(x1), y, 0, screen, 0, color)
-        
+    # ! BIG ERROR ! : When xtop == xbot, the lines slope may be really off and huge and draw off the sphere
 
+    d0 = float(xtop - xbot) / (ytop - ybot)
+
+    for y in range(int(ybot), int(ytop)):
+        draw_line(int(x0), y, 0, int(x1), y, 0, screen, zbuffer, color)
+        #if xtop == xbot: something i have not learned yet
+            
         # Once you hit YMid, Change the Slope to Top-Mid, 
         if y == ymid and ymid != ybot:
-            #print(d1)
             d1 = float(xtop - xmid) / (ytop - ymid)
-            #print(d1)
-            #x1 = xmid
         x0 += d0
         x1 += d1
 
@@ -86,6 +62,8 @@ def draw_polygons( matrix, screen, zbuffer, color ):
         normal = calculate_normal(matrix, point)[:]
 
         if normal[2] > 0:
+            
+
             '''draw_line( int(matrix[point][0]),
                        int(matrix[point][1]),
                        matrix[point][2],
@@ -106,8 +84,9 @@ def draw_polygons( matrix, screen, zbuffer, color ):
                        int(matrix[point+2][0]),
                        int(matrix[point+2][1]),
                        matrix[point+2][2],
-                       screen, zbuffer, color)'''
-            fill(screen, color, matrix[point][0], matrix[point][1], matrix[point][2],
+                       screen, zbuffer, color)
+            '''
+            fill(screen, color, zbuffer, matrix[point][0], matrix[point][1], matrix[point][2],
              matrix[point+1][0], matrix[point+1][1], matrix[point+1][2],
              matrix[point+2][0], matrix[point+2][1], matrix[point+2][2])
         color[0], color[1], color[2] = randint(0,255), randint(0,255), randint(0,255)
