@@ -18,9 +18,8 @@ def fill(screen, color, zbuffer, x0, y0, z0, x1, y1, z1, x2, y2, z2):
     x1, x0 = xbot, xbot
     z1, z0 = zbot, zbot
 
-    # Degeneracy, Set Slope
-    if ytop == ybot:
-        return    
+    # Degeneracy
+    if ytop == ybot:  return    
  
     # YMid = YBot
     elif ymid == ybot:
@@ -31,8 +30,7 @@ def fill(screen, color, zbuffer, x0, y0, z0, x1, y1, z1, x2, y2, z2):
     elif ymid == ytop:
         d1 = float(xmid - xbot) / (ymid - ybot)
         dz1 = float(zmid - zbot) / (ymid - ybot)
-
-    # Normal Case
+    # Normal Case (and ymid == ytop)
     else:
         d1 = float(xmid - xbot) / (ymid - ybot)
         dz1 = float(zmid - zbot) / (ymid - ybot)
@@ -40,14 +38,15 @@ def fill(screen, color, zbuffer, x0, y0, z0, x1, y1, z1, x2, y2, z2):
     
     d0 = float(xtop - xbot) / (ytop - ybot)
     dz0 = float(ztop - zbot) / (ytop - ybot)
-    
+
     for y in range(int(ybot)+1, int(ytop)+1):
-        draw_line(int(x0), y, 0, int(x1), y, 0, screen, zbuffer, color)
+        draw_line(int(x0), y, z0, int(x1), y, z1, screen, zbuffer, color)
         # Once you hit YMid, Change the Slope to Top-Mid, 
         if y >= ymid and ytop != ymid and d1 != float(xtop - xmid) / (ytop - ymid):
             d1 = float(xtop - xmid) / (ytop - ymid)
             dz1 = float(ztop - zmid) / (ytop - ymid)
             x1 = xmid
+            z1 = zmid
         x0 += d0
         x1 += d1
         z0 += dz0
@@ -353,11 +352,14 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
             d_east = -1 * B
             loop_start = y1
             loop_end = y
-            
-    if loop_end != loop_start:dz = float(z1 - z0)/(loop_end -loop_start)
+        
+    if loop_end > loop_start:
+        dz = float(z1 - z0)/(loop_end - loop_start)
+        #print([z1-z0, loop_end-loop_start, dz])
+
     z = float(z0)
+    
     while ( loop_start < loop_end ):
-       
         plot( screen, zbuffer, color, x, y, z )
         if ( (wide and ((A > 0 and d > 0) or (A < 0 and d < 0))) or
              (tall and ((A > 0 and d < 0) or (A < 0 and d > 0 )))):
@@ -371,4 +373,5 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
             d+= d_east
         loop_start+= 1
         z += dz
-    plot( screen, zbuffer, color, x, y, z1)
+
+    plot( screen, zbuffer, color, x, y, z)
