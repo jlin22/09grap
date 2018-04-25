@@ -40,7 +40,7 @@ def fill(screen, color, zbuffer, x0, y0, z0, x1, y1, z1, x2, y2, z2):
     dz0 = float(ztop - zbot) / (ytop - ybot)
 
     for y in range(int(ybot)+1, int(ytop)+1):
-        draw_line(int(x0), y, z0, int(x1), y, z1, screen, zbuffer, color)
+        draw_line(int(x0), y, z0, int(x1), y, z0, screen, zbuffer, color)
         # Once you hit YMid, Change the Slope to Top-Mid, 
         if y >= ymid and ytop != ymid and d1 != float(xtop - xmid) / (ytop - ymid):
             d1 = float(xtop - xmid) / (ytop - ymid)
@@ -374,4 +374,4 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
         loop_start+= 1
         z += dz
 
-    plot( screen, zbuffer, color, x, y, z)
+    plot( screen, zbuffer, color, x, y, z1)
